@@ -1,0 +1,125 @@
+<ion-view title="Tinder">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" nav-direction="back"  ui-sref="home.explore">
+      <i class="icon ion-fireball" style="color:#ccc"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>
+    <button class="button button-clear m-t-xs" >
+	  <div class="text-center mi-pollita" >
+		{{alang[96].text}}
+	  </div>
+    </button>
+  </ion-nav-title>
+  
+  <ion-content style="margin-bottom:50px;" delegate-handle="userMessageScroll">
+		
+		<!--RECENT MESSAGES -->	
+		<ion-list   can-swipe="listCanSwipe" delegate-handle="chat-list" ng-if="show == 1" >	  
+			<ion-item class="" style="border:none" ng-repeat="p in matches track by $index " ng-if="$index < 25" nav-transition="none" ng-click="changePage('home.messaging','right',p)">
+			  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+			  <div class="text-lg b-b b-light clear padder-v">
+				<div class="isPremium" ng-if="p.premium == 1"><img src="img/premium.png" width="20px"/></div>				  
+				
+
+				<!--NEW MESSAGE -->
+				<div class="text-c chat-name chat-new-m" ng-if="p.check_m == 3" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+				<div class="text-xs text-muted text-right chat-new-m" ng-if="p.check_m == 3" style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<p class="text-muted chat-last-m chat-new-m" ng-if="p.check_m == 3 && p.gift == 0" ng-bind-html="p.last_m | nl2br">{{p.last_m}}</p>
+				<p class="text-muted chat-last-m chat-new-m" ng-if="p.check_m == 3 && p.gift == 1">{{alang[102].text}}</p>
+				
+				<!--OLD MESSAGE -->
+				<div class="text-c chat-name" ng-if="p.check_m == 1 || p.check_m == 2 || p.check_m == 4" style="display:inline-table">{{p.name}}
+					<span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span>					
+				</div>
+				<div class="text-xs text-muted text-right " ng-if="p.check_m == 1 || p.check_m == 2 || p.check_m == 4" style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<div style="position:relative;width:100%;">
+				<p class="text-muted chat-last-m paQueRespete" ng-if="p.check_m == 1 && p.gift == 0 || p.check_m == 2 && p.gift == 0  || p.check_m == 4 && p.gift == 0 " ng-bind-html="p.last_m | nl2br">{{p.last_m}}</p>
+				<p class="text-muted chat-last-m paQueRespete" ng-if="p.check_m == 1 && p.gift == 1 || p.check_m == 2 && p.gift == 1  || p.check_m == 4 && p.gift == 1 " >{{alang[102].text}}</p>				
+					<div class="rounded profileP " ng-if="p.check_m == 1" style="position:aboslute;display:inline-table;float:right;margin-right:10px;background-image:url('{{p.photo}}');width:20px;height:20px;opacity:0.5"></div>
+					<div class="rounded profileP" ng-if="p.check_m == 2" style="position:aboslute;display:inline-table;float:right;margin-right:10px;background-image:url('{{p.photo}}');width:20px;height:20px;opacity:1"></div>					
+				</div>
+				
+			  </div>
+				<ion-option-button class="button-positive button-chat-delete"
+								   ng-click="onItemDelete(p);matches.splice($index, 1)">
+				 <i class="icon ion-ios-trash" style="width:50px"></i>
+				</ion-option-button>							  
+			</ion-item>
+		</ion-list>
+		
+		<!--UNREAD MESSAGES -->
+		<ion-list can-swipe="listCanSwipe" can-swipe="listCanSwipe" ng-if="show == 2" >	  
+			<ion-item class="" style="border:none" ng-repeat="p in unread track by $index " nav-transition="none" ng-click="changePage('home.messaging','right',p)">
+			  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+			  <div class="text-lg b-b b-light clear padder-v">
+				
+				<!--NEW MESSAGE -->
+				<div class="text-c chat-name chat-new-m" ng-if="p.check_m == 3" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+				<div class="text-xs text-muted text-right chat-new-m" ng-if="p.check_m == 3" style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<p class="text-muted chat-last-m chat-new-m" ng-if="p.check_m == 3 && p.gift == 0" ng-bind-html="p.last_m | nl2br">{{p.last_m}}</p>
+				<p class="text-muted chat-last-m chat-new-m" ng-if="p.check_m == 3 && p.gift == 1">{{alang[102].text}}</p>
+				
+				<!--OLD MESSAGE -->
+				<div class="text-c chat-name" ng-if="p.check_m == 1 || p.check_m == 2 || p.check_m == 4" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+				<div class="text-xs text-muted text-right " ng-if="p.check_m == 1 || p.check_m == 2 || p.check_m == 4" style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<div style="position:relative;width:100%;">
+				<p class="text-muted chat-last-m paQueRespete" ng-if="p.check_m == 1 && p.gift == 0 || p.check_m == 2 && p.gift == 0  || p.check_m == 4 && p.gift == 0 " ng-bind-html="p.last_m | nl2br">{{p.last_m}}</p>
+				<p class="text-muted chat-last-m paQueRespete" ng-if="p.check_m == 1 && p.gift == 1 || p.check_m == 2 && p.gift == 1  || p.check_m == 4 && p.gift == 1 " >{{alang[102].text}}</p>				
+					<div class="rounded profileP " ng-if="p.check_m == 1" style="position:aboslute;display:inline-table;float:right;margin-right:10px;background-image:url('{{p.photo}}');width:20px;height:20px;opacity:0.5"></div>
+					<div class="rounded profileP" ng-if="p.check_m == 2" style="position:aboslute;display:inline-table;float:right;margin-right:10px;background-image:url('{{p.photo}}');width:20px;height:20px;opacity:1"></div>					
+				</div>
+				
+			  </div>
+				<ion-option-button class="button-positive button-chat-delete"
+								   ng-click="onItemDelete(p);matches.splice($index, 1)">
+				 <i class="icon ion-ios-trash" style="width:50px"></i>
+				</ion-option-button>							  
+			</ion-item>
+		</ion-list>
+
+		<!--ALL FRIENDS -->
+		<ion-list   can-swipe="listCanSwipe" delegate-handle="chat-list" ng-if="show == 3" >	  
+			<ion-item class="" style="border:none" ng-repeat="p in matches | orderBy : '-last_a' track by $index " nav-transition="none" ng-click="changePage('home.messaging','right',p)">
+			  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+			  <div class="text-lg b-b b-light clear padder-v">
+				
+				<!--NEW MESSAGE -->
+				<div class="text-c chat-name chat-new-m" ng-if="p.check_m == 3" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+				<div class="text-xs text-muted text-right chat-new-m" ng-if="p.check_m == 3" style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<p class="text-muted chat-last-m chat-new-m" ng-if="p.check_m == 3 && p.gift == 0" ng-bind-html="p.last_m | nl2br">{{p.last_m}}</p>
+				<p class="text-muted chat-last-m chat-new-m" ng-if="p.check_m == 3 && p.gift == 1">{{alang[102].text}}</p>
+				
+				<!--OLD MESSAGE -->
+				<div class="text-c chat-name" ng-if="p.check_m == 1 || p.check_m == 2 || p.check_m == 4" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+				<div class="text-xs text-muted text-right " ng-if="p.check_m == 1 || p.check_m == 2 || p.check_m == 4" style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<div style="position:relative;width:100%;">
+				<p class="text-muted chat-last-m paQueRespete" ng-if="p.check_m == 1 && p.gift == 0 || p.check_m == 2 && p.gift == 0  || p.check_m == 4 && p.gift == 0 " ng-bind-html="p.last_m | nl2br">{{p.last_m}}</p>
+				<p class="text-muted chat-last-m paQueRespete" ng-if="p.check_m == 1 && p.gift == 1 || p.check_m == 2 && p.gift == 1  || p.check_m == 4 && p.gift == 1 " >{{alang[102].text}}</p>				
+					<div class="rounded profileP " ng-if="p.check_m == 1" style="position:aboslute;display:inline-table;float:right;margin-right:10px;background-image:url('{{p.photo}}');width:20px;height:20px;opacity:0.5"></div>
+					<div class="rounded profileP" ng-if="p.check_m == 2" style="position:aboslute;display:inline-table;float:right;margin-right:10px;background-image:url('{{p.photo}}');width:20px;height:20px;opacity:1"></div>					
+				</div>
+				
+			  </div>
+				<ion-option-button class="button-positive button-chat-delete"
+								   ng-click="onItemDelete(p);matches.splice($index, 1)">
+				 <i class="icon ion-ios-trash" style="width:50px"></i>
+				</ion-option-button>							  
+			</ion-item>
+		</ion-list>
+		
+  </ion-content>
+	<ion-tabs class="tabs-stable mi-pollita tabs-icon-top animated fadeIn">
+
+	  <ion-tab title="{{alang[103].text}}" class="animated fadeIn mi-pollita" icon-on="ion-ios-clock-outline" icon-off="ion-ios-clock-outline" on-select="onTabShow(1)">
+	  </ion-tab>
+
+	  <ion-tab title="{{alang[104].text}}" ng-if="unrread > 0" badge="unrread" badge-style="opacity-badge" class="mi-pollita" icon-on="ion-ios-email-outline" icon-off="ion-ios-email-outline" on-select="onTabShow(2)">
+	  </ion-tab>
+
+	  <ion-tab title="{{alang[105].text}}"  ng-if="contacts > 0"  class="mi-pollita" icon-on="ion-ios-people-outline" icon-off="ion-ios-people-outline"  on-select="onTabShow(3)">
+	  </ion-tab>
+
+	</ion-tabs>  
+</ion-view>

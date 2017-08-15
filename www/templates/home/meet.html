@@ -1,0 +1,98 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" nav-direction="back"  ui-sref="home.settings">
+		<i class="icon ion-arrow-left-c"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>
+    <button class="button button-clear button-assertive m-t-xs">
+	  <div class="text-center assertive mi-pollita" >
+		{{check}}
+	  </div>
+    </button>
+  </ion-nav-title>
+  
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="openSettingsModal()">
+		<i class="icon ion-levels" style="color:#ccc"></i>
+    </button>
+  </ion-nav-buttons>  
+  
+  <ion-content >
+ 
+    <div class="b-b b-light wrapper" style="position:relative;background:#f4f4f4;">
+      <ion-scroll direction="x" class="scroll-horizontal wrapper-xs">
+        <div class="text-center scroll-item m-r-sm pos-rlt" ng-repeat="p in spotlight track by $index">
+          <div class="rounded profilePhoto animated" ng-if="$index > 0" ng-model="spot$index" style="background-image:url('{{trustPhoto(p.spotPhoto)}}');width:60px;height:60px;border:2px solid #fff;opacity:0.95;" ng-click="openProfileModal({{p.id}},'{{p.name}}','{{p.photo}}',{{p.age}},'{{p.city}}')" alt="" class="thumb-md rounded"/></div>
+		  <span class="dot-notification on-avatar" ng-if="p.status == 1" style="background:#51B80E" ></span>
+        </div>
+      </ion-scroll>
+    </div>  
+    <div class="wrapper text-center text-muted mi-pollita" style="color:#fff;font-size:10px;height:14px;line-height:4px;"  ng-click="openSettingsModal()">
+		{{alang[116].text}}
+	</div> 	
+      <div vertical layout center flex ng-show="loading"  >
+        <div flex horizontal layout center style="margin-top:50%;z-index:-1;">
+          <div class="load">
+			<img class="thumb-lg rounded b b-5x b-light box-shadow profilePhoto" style="background-image:url('{{photo}}');width:96px;height:96px;"/>		  
+          </div>
+        </div>
+      </div>	
+	  
+		<div vertical center flex style="padding-bottom:50px">
+	
+			<div class="add-spotlight" ng-if="showMe">
+				<div class="spotlight-add-me animated fadeInUp" ng-click="openSpot()"  style="background-image:url('{{photo}}'); width: 70px; height: 70px;">
+					<div class="overlay bg-tinder">
+						<i class="icon ion-plus-round"></i>
+					</div>
+				</div>
+			</div>
+			<div class="search-container" >
+			  <div ng-show="meet.length == 0" vertical layout center flex >
+				<div class="text-muted text-center l-h" style="margin-top:250px;">
+				  {{alang[117].text}}
+				  <br>
+				  <a ng-click="openSettingsModal()">{{alang[118].text}}</a>
+				</div>
+			  </div>
+				<div class="search animated {{p.margin}}" data-search-show="{{$index+1}}" ng-repeat="p in meet track by $index" ng-click="openProfileModal({{p.id}},'{{p.name}}','{{p.photo}}',{{p.age}},'{{p.city}}')">
+					<div class="like-top-left liked" ng-show="p.fan == 1"><i class="icon ion-heart" style="color:#fff"></i></div>
+					<div class="like-top-left liked" style="display:none" id="like{{p.id}}"><i class="icon ion-heart" style="color:#fff"></i></div>
+					<div class="like-top-left" ng-if="p.match == 1"><i class="icon ion-heart" style="color:#fff"></i></div>
+					<div class="profile-photo" style="background-image: url({{trustPhoto(p.photo)}});"></div>
+					<div class="name">
+						<h1><b>{{p.firstName}}</b> <div class="online" ng-if="p.status == 1" style="width:8px;height:8px"></div></h1>
+					</div>
+				</div>
+				<ion-infinite-scroll immediate-check="false" on-infinite="loadMore()" distance="5%">
+				</ion-infinite-scroll>	
+			  <div ng-show="loadMores.length == 0" vertical layout center flex >
+				<div class="text-muted text-center l-h" style="margin-top:50px;">
+				  {{alang[117].text}}
+				  <br>
+				  <a ng-click="openSettingsModal()">{{alang[118].text}}</a>
+				</div>
+			  </div>
+
+			</div>			
+		</div>
+	
+  </ion-content>
+  <div class="wrapper-reward" ng-if="showSpot">
+		<div class="modal-reward modal--congratulations  animated fadeIn">
+			<div class="modal-reward-top">
+				<div class="klose animated fadeInUp" ng-click="cancelSpot()" >
+					<i class="icon ion-close-round" style="margin-left:7px;line-height:27px;"></i>
+				</div>
+				<img class="modal-reward-icon u-imgResponsive animated fadeInUp rounded profileP"  style="width:120px;height:120px;background-image:url({{photo}});">
+				<div class="modal-reward-header animated fadeInUp">{{alang[119].text}}</div>
+				<div class="modal-reward-subheader animated fadeInUp">{{alang[120].text}}<br>{{alang[121].text}} <strong>{{spot_price}}</strong> {{tlang[17].text}}</div>
+			</div>
+			<div class="modal-reward-bottom" ng-click="addToSpotBtn();cancelSpot();">
+				<button class="modal-reward-btn u-btn u-btn--danger mi-pollita bg-tinder" >{{alang[122].text}}</button>
+			</div>
+		</div>
+	</div>
+</ion-view>

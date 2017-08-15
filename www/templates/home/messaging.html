@@ -1,0 +1,178 @@
+<ion-view class="has-giphy" ng-class="{'show-gif': isGifShown}" >
+
+	  <ion-nav-buttons side="left">
+		<button class="button button-clear" ng-click="goBack()">
+		  <i class="icon ion-arrow-left-c"></i>
+		</button>
+	  </ion-nav-buttons>
+
+	  <ion-nav-title >
+		<button class="button button-clear m-t-xs" ng-click="openProfileModal({{id}},'{{name}}','{{photo}}',{{age}},'{{city}}')">
+		  <div class="text-center mi-pollita" >
+			{{name}} <div class="online-chat" ng-if="status" style="width:8px;height:8px"></div>
+		  </div>
+		</button>
+
+	  </ion-nav-title>
+
+	  <ion-nav-buttons side="right">
+		<button class="button button-clear" ng-click="showUserOptions()">
+		  <i class="icon ion-more"></i>
+		</button>
+	  </ion-nav-buttons>
+
+  <ion-content  delegate-handle="userMessageScroll"   on-swipe-right="goToChat()" style="padding-bottom:100px;border-top:2px solid #eee;">
+      <!-- Chat bubbles -->
+      <div class="list chat-bubble" >
+	    <div class="timestamp" ng-if="moreMen" ng-click="loadMoreMen(15)">{{alang[106].text}} {{totalMen}} {{alang[107].text}}</div>
+		
+        <div class="item item-avatar b-none noobeando" ng-class="item.isMe?'me':'friend'" href="#" ng-repeat="item in messages | orderBy : 'id' track by $index" ng-hide="messages.length - showm > $index " >
+          <img ng-src="{{item.avatar}}" ng-if="!item.isMe">
+          <div class="bubble" ng-class="{'bubble-image': item.type == 'image'}">
+            <span class="content" ng-show="item.isMe" ng-class="item.seen == 0?'bg-tinder':'bg-tinder'" ng-if="item.type !== 'image'" ng-bind-html="item.body | nl2br"></span>
+			<span class="content" ng-show="!item.isMe" ng-if="item.type !== 'image'" ng-bind-html="item.body | nl2br"></span>
+            <img ng-src="{{item.body}}" alt="" ng-click="openChatImageModal('{{item.body}}')" ng-if="item.type == 'image'">
+          </div>
+        </div>	
+		
+        <div class="item item-avatar b-none noobeando" ng-class="item.isMe?'me':'friend'" href="#" ng-repeat="item in nmessages | orderBy : 'id' track by $index"  >
+          <img ng-src="{{item.avatar}}" ng-if="!item.isMe">
+          <div class="bubble" ng-class="{'bubble-image': item.type == 'image'}">
+            <span class="content"  ng-show="item.isMe" ng-class="item.seen == 0?'bg-tinder':'bg-tinder'" ng-if="item.type !== 'image'" ng-bind-html="item.body | nl2br"></span>
+			<span class="content" ng-show="!item.isMe" ng-if="item.type !== 'image'" ng-bind-html="item.body | nl2br"></span>
+            <img ng-src="{{item.body}}" alt="" ng-click="openChatImageModal('{{item.body}}')" ng-if="item.type == 'image'">
+          </div>
+        </div>	
+		
+      </div>
+  </ion-content>
+	<div class="wrapper-reward" ng-show="sendGiftShow">
+		<div class="modal-reward modal--congratulations  animated fadeIn">
+			<div class="modal-reward-top">
+				<div class="klose animated fadeInUp" ng-click="cancelGift()" >
+					<i class="icon ion-close-round" style="margin-left:7px;line-height:27px;"></i>
+				</div>
+				<img class="modal-reward-icon u-imgResponsive animated fadeInUp" src="{{gift_icon}}">
+				<div class="modal-reward-header animated fadeInUp">{{alang[108].text}} {{name}}</div>
+				<div class="modal-reward-subheader animated fadeInUp">{{alang[109].text}} <strong>{{gift_price}}</strong> </div>
+			</div>
+			<div class="modal-reward-bottom" ng-click="sendGiftBtn(gift_icon,gift_price);cancelGift();">
+				<button class="modal-reward-btn u-btn u-btn--danger mi-pollita bg-tinder" >{{alang[110].text}}</button>
+			</div>
+		</div>
+	</div>
+  <div class="giphy-container" ng-show="isGifShown">
+    <div class="text-center" ng-show="isGifLoading">
+      <ion-spinner icon="ios"></ion-spinner>  
+    </div>
+    <ion-scroll direction="x" class="scroll-horizontal">
+      <div class="text-center scroll-item" ng-repeat="gif in gifs track by $index" ng-click="sendGif(gif.images.fixed_height_small.url)">
+        <img ng-src="{{gif.images.fixed_height_small.url}}" alt="">
+      </div>
+    </ion-scroll>
+  </div>
+  
+  <div class="giphy-container" ng-show="isGiftShown">
+    <ion-scroll direction="x" class="scroll-horizontal">
+      <div class="text-center scroll-item" ng-repeat="gift in gifts track by $index" ng-click="sendGift(gift.icon,gift.price)">
+        <img ng-src="{{gift.icon}}" style="width:90px;margin-right:5px;border:1px solid #eee">
+      </div>
+    </ion-scroll>
+  </div>  
+  
+  <ion-footer-bar class="bar-light item-input-inset"   elastic  ng-if="!chatLimit" ng-show="!maxDaily"> 
+  		<div class="footer-btn-wrap" ng-show="actions" ng-if="isGifShown">
+		  <button type="button" class="button button-clear footer-btn" ng-click="closeGiphy()">
+			<i class="icon ion-close-round" style="color:#797979;font-size:28px;"></i>
+		  </button>  
+		</div>	
+		<div class="footer-btn-wrap" ng-show="actions" ng-if="isGiftShown">
+		  <button type="button" class="button button-clear footer-btn" ng-click="closeGift()">
+			<i class="icon ion-close-round" style="color:#797979;font-size:28px;"></i>
+		  </button>  
+		</div>
+		<div class="footer-btn-wrap" ng-show="actions" ng-if="!isGifShown" ng-hide='isGiftShown'>
+		  <button type="button" class="button button-clear footer-btn" ng-click="visible(1)">
+			<img src="img/chat-more.png" style="margin-top:8px;margin-right:10px;width:35px;height:30px" />
+		  </button>  
+		</div>				
+		<label class="item-input-wrapper no-bg" ng-show="actions">
+		  <textarea type="text" rows="1" msd-elastic placeholder="" focus-me="checkFocus" id="type-area" ng-model="message" class="white chatInput" ng-show="!isGifShown">
+		  </textarea>
+		  <input type="search" placeholder="{{alang[111].text}}" id="type-area2" ng-model="gifQuery" ng-change="newGif(gifQuery)" ng-model-options="{ debounce: 500 }" ng-show="isGifShown">
+		</label>
+		<div class="footer-btn-wrap" ng-show="actions">
+		  <button type=submit class="button button-clear footer-btn" ng-click="sendText(message);message = '';" ng-disabled="message.length == 0" ng-show="isGifShown === false || isGiftShown === false">
+			<i class="icon ion-ios-paperplane-outline"></i>
+		  </button>
+		</div>
+		
+		<div class="footer-btn-wrap" ng-show="!actions">
+		  <button type="button" class="button button-clear footer-btn" ng-click="visible(2)">
+			<img src="img/aa.png" style="margin-top:8px;margin-right:10px;width:35px;height:30px" />
+		  </button>  
+		</div>	
+
+		<div class="footer-btn-wrap" ng-show="!actions" ng-if="!isGifShown || !isGiftShown">
+		  <button type="button" class="button button-clear footer-btn" ng-click="openGiphy()">
+			<img src="img/chat-gif.png" style="margin-top:8px;margin-right:10px;width:35px;height:30px" />
+		  </button>  
+		</div>		
+		
+		<div class="footer-btn-wrap" ng-show="!actions">
+		  <button type="button" class="button button-clear footer-btn" ng-click="openGift()">
+			<img src="img/chat-gift.png" style="margin-top:7px;width:35px;height:30px" />
+		  </button>  
+		</div>	
+
+		<div class="footer-btn-wrap" ng-show="!actions" >
+		  <button type="button" class="button button-clear footer-btn" ng-click="sendPhoto(1)">
+			<img src="img/chat-photo.png" style="margin-top:8px;margin-right:10px;width:35px;height:30px" />
+		  </button>  
+		</div>
+		
+		<div class="footer-btn-wrap" ng-show="!actions">
+		  <button type="button" class="button button-clear footer-btn" ng-click="sendPhoto(2)">
+			<img src="img/chat-cam.png" style="margin-top:8px;margin-right:10px;width:35px;height:30px" />
+		  </button>
+		</div>	
+
+		<div class="footer-btn-wrap" ng-show="!actions" style="float:right">
+		  <button type="button" class="button button-clear footer-btn"  ng-click="startVideocall(1)">
+			<i class="icon ion-ios-videocam-outline" style="color:#797979;font-size:28px;"></i>
+		  </button>  
+		</div>	
+			
+  </ion-footer-bar>
+  <div ng-show="chatLimit" >
+		<div class="credits-section text-center">
+			<h5 class="mi-pollita" style="color:#BFC5D5">{{alang[112].text}}</h5>					
+			<div class="wrapper text-center">
+			  <div class="pos-rlt">
+				<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+				<i class="icon ion-chatbubble-working button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#275BDF"></i>							
+			  </div>
+			</div>						
+			<h1>{{alang[46].text}} {{extrachat}} {{alang[47].text}}</h1>
+			<h4 ng-click="openCreditsModal()">{{alang[113].text}}</h4>
+			<center><span class="spotlight-me" ng-click="buyDailyChat()"  style="background:#275BDF;border:#025BDF">{{alang[114].text}}</span></center>
+			<br><h4>{{tlang[13].text}} <b>{{dailychatprice}}</b> {{tlang[17].text}}</h4>                    
+		</div>
+  </div>
+ 	<div class="only-premium" ng-if="maxDaily">
+		<div class="credits-section text-center">
+			<h5 class="mi-pollita" style="color:#BFC5D5">{{alang[112].text}}</h5>			
+			<div class="wrapper text-center">
+			  <div class="pos-rlt">
+				<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+				<i class="icon ion-flash button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#8A21EF"></i>							
+			  </div>
+			</div>						
+			<h1>{{alang[112].text}}</h1>
+			<h4>{{alang[115].text}}</h4>
+			<center><span class="spotlight-me" ng-click="openPremiumModal()" style="background:#8A21EF;border:#2821EF">{{alang[114].text}}</span></center>
+			<br><h4>{{tlang[13].text}} <b>{{dailychatprice}}</b> {{tlang[17].text}}</h4> 		
+			</h4>                    
+		</div>
+	</div>
+</ion-view>

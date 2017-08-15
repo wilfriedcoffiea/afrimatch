@@ -1,0 +1,39 @@
+<ion-modal-view view-title="Videochat">
+  <ion-content scroll="false" ng-style="{height: iframeHeight + 'px'}">
+	<div class="videocall-container" ng-style="{height: iframeHeight + 'px'}">
+		<div class="videopb" ></div>
+		<video autoplay muted loop id="myCam" ng-show="!called" ng-style="{height: iframeHeight + 'px'}">
+			<source src="" type="video/mp4"></source>
+		</video> 		
+		<div class="videofooter"></div>
+		<div class="bulbs called" ng-if="called">
+			<div class="bulb-1" style="margin-left:-10px;background:#F03D26;border:1px solid #F03D26">
+				<i class="ion-ios-telephone" style="margin-left:10px;color:#fff;left:8px"></i>
+			</div>
+			<div id="end-call" class="bulb-2" style="border:none"></div>
+			<div class="bulb-3" ng-click="acceptCall()" style="background:#4FCA31;border:1px solid #4FCA31"><i class="ion-ios-videocam" style="margin-left:3px;color:#fff;"></i></div> 					
+		</div>
+		<div class="bulbs called" ng-if="!called">
+			<div id="turn-mic" class="bulb-1" style="margin-left:-10px;border:2px solid #fff;"><i class="ion-ios-mic-outline" style="margin-left:10px;color:#fff;"></i></div>
+			<div id="end-call" ng-click="closeVideoModal();" class="bulb-2 " style="border:none"><i class="ion-close-round" style="margin-left:5px;"></i></div> 
+			<div id="turn-video" class="bulb-3 " style="border:2px solid #fff;"><i class="ion-ios-videocam-outline" style="margin-left:3px;color:#fff;"></i></div> 					
+		</div>		
+		
+		<div class="ball">
+			<div class="halo"></div>
+		</div>		
+		
+		<div class="loading" ng-if="!called" style="z-index:99;">
+			<h4 id="callUserName" class="animated fadeInUp" style="color:#fff;">{{name}}</h4>
+			<b id="call_status" class="animated fadeInUp" style="color:#f2f2f2;">{{text}}</b><br><br>
+			<div class="call-loader" ></div>
+		</div>
+		
+		<div class="loading" ng-if="called" style="z-index:99;">
+			<h4 id="callUserName" class="animated fadeInUp" style="color:#fff;">{{name}}</h4>
+			<b id="call_status" class="animated fadeInUp" style="color:#faf8f8;padding:5px;">{{text}}</b><br><br>
+			<div class="call-loader" ></div>
+		</div>		
+	</div>	
+  </ion-content>
+</ion-modal-view>

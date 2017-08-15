@@ -1,0 +1,39 @@
+<ion-view hide-nav-bar="true" >
+<ion-content class="bg-login" scroll="false" ng-style="{height: iframeHeight + 'px'}">
+  <div class="wrapper nop-nom" fit vertical layout justified>
+	<div class="goBack" ng-click="changePage('welcome','left','')"><i class="icon ion-ios-arrow-back"></i></div>
+	<div class="login-logo animated fadeInUp">
+		<img src="{{logoLogin}}">
+	</div>
+	<div class="login-form animated fadeIn">
+		<input type="text" class="login-input" value="admin@lindoo.com" ng-model="user.login_email" placeholder="{{lemail}}"/>
+		<input type="password" ng-show="!forgetBtn" value="lindoo2017" id="pass" required class="login-input" ng-model="user.login_pass" placeholder="{{lpass}}"/>
+		<div class="login-btn" ng-class="{active: isActive}" ng-if="!loginBtn" ng-click="send(user)">
+			<span><center>{{logintext}}</center></span>
+		</div>
+		<div class="login-btn" ng-class="{active: isActive}" ng-if="forgetBtn" ng-click="forget(user)">
+			<span><center>{{recovertext}}</center></span>
+		</div>		
+		<div class="login-loader" ng-if="loginBtn && !forgetBtn">
+			<center><div class="loader02"></div></center>
+		</div>			
+		<div class="login-forget" ng-click="recoverPass()" ng-if="!forgetBtn" style="text-algin:right;float:right">
+			 <span>{{lang[180].text}}</span>
+		</div>
+		<div class="login-forget" ng-click="backLogin()" ng-if="forgetBtn" style="text-algin:right;float:right">
+			 <span>{{alang[27].text}} {{lang[1].text}}</span>
+		</div>
+		<div class="social-container">
+			<div class="social fb" ng-click="fb();"><i class="icon ion-social-facebook"></i> <span data-lid="7"></span> facebook</div>
+			<div class="social"> </div>
+			<div class="social"> </div>
+			<div class="social"> </div>
+		</div>
+	</div>
+	<div class="login-footer" nav-transition="none" ui-sref="home.register">
+		<p><span data-alid="24"></span> <b data-alid="25"></b></p>
+	</div>
+  </div>
+   <div id="fb-root"></div>
+  </ion-content>
+</ion-view>

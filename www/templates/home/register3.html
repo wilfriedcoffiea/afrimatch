@@ -1,0 +1,31 @@
+<ion-view hide-nav-bar="true" nav-transition="none">
+<ion-content class="bg-login"  nav-transition="none" scroll="false" ng-style="{height: iframeHeight + 'px'}">
+  <div class="wrapper nop-nom" fit vertical layout justified>
+	<div class="login-form animated fadeIn" style="padding-top:10%">
+		<h2 style="margin-left:10%;margin-right:10%;padding-bottom:20px;"><strong>{{name}}</strong>, {{lang31}}<h2>					
+		<p style="margin-left:10%" data-alid="32"></p>			
+		<input type="date" max="2000-01-01" min="1930-01-01" id="birth" class="login-input" style="width:50%;display:inline-block;margin-left:10%;"/>					
+		<p style="margin-left:10%" data-alid="33"></p>		
+		<div style="position:relative;width:90%;margin-left:10%;padding-bottom:15px;">
+			<div style="position:relative;width:30%;display:inline-table">
+				<img ng-if="!boy"  ng-click="selectBoy()" ng-src="img/boys.png" width="80px">
+				<img ng-if="boy"  ng-click="selectBoy()" ng-src="img/boys_a.png"  width="80px">
+			</div>
+			<div style="position:relative;width:30%;display:inline-table">
+				<img ng-if="!girl" ng-click="selectGirl()" ng-src="img/girls.png"  width="80px">
+				<img ng-if="girl" ng-click="selectGirl()" ng-src="img/girls_a.png" width="80px">
+			</div>	
+		</div>			
+		<div class="login-btn" ng-class="{active: isActive}" ng-if="!regBtn" ng-click="send()">
+			<span><center>{{nexttext}}</center></span>
+		</div>			
+		<div class="login-loader" ng-if="regBtn">
+			<center><div class="loader02"></div></center>
+		</div>		
+	</div>
+	<div class="login-footer" nav-transition="none" ui-sref="home.login">
+		<p><span data-alid="27"></span> <b data-lid="1"></b></p>
+	</div>
+  </div>
+  </ion-content>
+</ion-view>

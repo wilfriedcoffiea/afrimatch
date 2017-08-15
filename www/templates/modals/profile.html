@@ -1,0 +1,93 @@
+<ion-modal-view>
+  <ion-content class="profile desenfocame"  delegate-handle="modalContent">
+    <div class="header-bar-transparent"  horizontal layout justified style="position:fixed">
+      <button ng-click="closeProfileModal()">
+        <i class="icon ion-close"></i>
+      </button>
+      
+      <button class="" ng-show="myProfile" ng-click="closeProfileModal();openEditProfileModal()">
+        {{alang[123].text}}
+      </button>
+      <button class="" ng-show="!myProfile" ng-click="blockUser()">
+       <i class="icon ion-android-warning" ></i>
+      </button>      
+    </div>
+
+	<div class="profile-slide"  style="position:absolute;top:0;width:100%;height:360px;">		
+		<div style="background-image: url({{photo}})" class="image" id="topPhoto" ></div>
+	</div>
+	<ion-slide-box show-pager="true" class="slider-pager" ng-show="photos.length > 1" style="position:absolute;top:0; width:100%; height:360px;z-index:5">
+		<ion-slide ng-repeat="i in photos track by $index"  style="position:relative;top:0;width:100%;height:360px;" ng-click="goToSlide($index)">
+			<div class="profile-slide" style="position:relative;top:0;width:100%;height:360px;">		
+				<div class="image" style="background-image: url({{i.photo}})"></div>
+			</div>
+		</ion-slide>
+	</ion-slide-box>	
+    <div class="wrapper b-b b-light text-center"  style="border:none;padding-top:380px;">
+      <div class="text-xl">
+        <span class="font-bold mi-pollita  animated" style="color:#2F2F2F" id="user-name">{{name}}, {{age}} <span class="chat-status" ng-if="status" style="background:#51B80E" ></span></span>
+      </div>
+      <div class="text-muted mi-pollita">
+        <p class="animated" id="user-country">{{city}}, {{country}}</p>
+      </div>
+    </div>
+
+    <div class="wrapper b-b b-light text-center text-muted text-md bg-tinder mi-pollita" ng-click="closeProfileModal()" >
+      <div class="animated" id="user-bio">{{bio}}</div>
+    </div>
+
+    <div class="wrapper b-b text-muted text-md text-center mi-pollita" style="background:#f6f6f6;font-size:14px;color:#2F2F2F" ng-click="closeProfileModal()">
+      {{alang[124].text}}
+    </div>
+    <div class="wrapper b-b b-light text-muted text-md" style="width:50%;display:inline-table;font-size:12px;padding:5px;padding-left:20px;" ng-repeat="e in extended track by $index"
+		ng-show="$index != 0" ng-click="closeProfileModal()">
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 1" style="color:#2F2F2F">{{lang[223].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 2" style="color:#2F2F2F">{{lang[227].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 3" style="color:#2F2F2F">{{lang[232].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 4" style="color:#2F2F2F">{{lang[235].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 5" style="color:#2F2F2F">{{lang[236].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 6" style="color:#2F2F2F">{{lang[246].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 7" style="color:#2F2F2F">{{lang[252].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 8" style="color:#2F2F2F">{{lang[258].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 9" style="color:#2F2F2F">{{lang[262].text}}</div>
+      <div class="font-bold text-muted mi-pollita" ng-if="$index == 10" style="color:#2F2F2F">{{lang[263].text}}</div>	  
+      <div ng-if="e.length">
+        {{e}}
+      </div>
+      <div ng-if="!e.length">
+        {{lang[279].text}}
+      </div>	  
+    </div>
+
+
+    <div class="wrapper b-b text-muted text-md text-center mi-pollita" ng-click="closeProfileModal()" style="background:#f6f6f6;font-size:14px;color:#2F2F2F">
+      {{1 + interest.length}} {{lang[276].text}}
+    </div>
+    <div class="wrapper b-b b-light text-muted text-md" style="border:none" ng-click="closeProfileModal()">
+      <div>
+        <button class="button button-small  text-c m-r-sm m-b-sm mi-pollita" style="padding-left:10px;padding-right:10px;border:none;" >{{site_name}}</button>	  
+        <button class="button button-small  text-c m-r-sm m-b-sm mi-pollita" style="padding-left:10px;padding-right:10px;border:none;" ng-repeat="i in interest track by $index">{{i.name}}</button>
+      </div>
+    </div>
+	
+  </ion-content>
+
+  <div class="card-actions padder-v on-profile bg-gd" ng-if="!myProfile" ng-show="!wtf" horizontal layout around-justified center >
+    <div class="card-action no-padder">
+      <button class="button button-assertive rounded bg-nolike-btn" ng-class="{zoom: isMoveLeft}" ng-click="closeProfileModal();cardDestroyed(0,id);">
+        <i class="icon ion-close-round text-2x rounded"></i>
+      </button>
+    </div>
+    <div class="card-action no-padder"  ng-click="closeProfileModal();goToChatGlobal('home.messaging','right',cu)">
+      <button class="button button-calm rounded bg-chat-btn">
+        <i class="icon ion-chatbubble-working text-2x rounded"></i>
+      </button>
+    </div>
+    <div class="card-action no-padder">
+      <button class="button button-balanced bg-like-btn rounded" ng-class="{zoom: isMoveRight}" ng-click="closeProfileModal();cardDestroyed(1,id);">
+        <i class="icon ion-heart text-2x rounded"></i>
+      </button>
+    </div>
+    
+  </div>
+</ion-modal-view>

@@ -1,0 +1,277 @@
+<ion-modal-view class="bg-muted">
+  <ion-header-bar>
+    <h1 class="title" data-tid="110"></h1>
+    <button class="button button-clear " ng-if="!loading" ng-click="closeEditProfileModal()"><i class="icon ion-android-close"></i></button>
+  </ion-header-bar>
+
+  <ion-content class="profile">  
+    <div class="photos" >
+      <div class="row">
+        <div class="col col-66">
+            <div class="photo-pickable" ng-if="photo1 == null" >
+              <div class="w-full r-3x profileP" ng-click="uploadPhoto()" style="height:200px;background-color:#f3f3f3;"></div>
+            </div>
+            <div class="photo-pickable" ng-if="photo1 != null">
+              <div class="w-full r-3x profileP" style="height:200px;background-color:#f3f3f3;background-image:url({{trustPhoto(photo1.photo)}})"></div>
+            </div>
+        </div>
+		
+        <div class="col col-33">
+            <div class="photo-pickable" ng-if="photo2 == null" >
+              <div class="w-full r-3x m-b-xs profileP" ng-click="uploadPhoto()" style="height:100px;background-color:#f3f3f3;"></div>
+            </div>
+            <div class="photo-pickable" ng-if="photo2 != null" >
+              <div class="w-full r-3x m-b-xs profileP" ng-click="showPhotoOptions(2,photo2.id,photo2.blocked,photo2.profile)"  style="height:100px;background-color:#f3f3f3;background-image:url({{trustPhoto(photo2.photo)}})"></div>
+            </div>
+			
+            <div class="photo-pickable" ng-if="photo3 == null" ng-click="uploadPhoto()">
+              <div class="w-full r-3x profileP" style="height:100px;background-color:#f3f3f3;"></div>
+            </div>
+            <div class="photo-pickable" ng-if="photo3 != null">
+              <div class="w-full r-3x profileP" ng-click="showPhotoOptions(3,photo3.id,photo3.blocked,photo3.profile)"  style="height:100px;background-color:#f3f3f3;background-image:url({{trustPhoto(photo3.photo)}})"></div>
+            </div>
+        </div>
+		
+      </div>
+      <div class="row">
+        <div class="col col-33">
+            <div class="photo-pickable" ng-if="photo4 == null" ng-click="uploadPhoto()">
+              <div class="w-full r-3x profileP" style="height:100px;background-color:#f3f3f3;"></div>
+            </div>
+            <div class="photo-pickable" ng-if="photo4 != null">
+              <div class="w-full r-3x profileP" ng-click="showPhotoOptions(4,photo4.id,photo4.blocked,photo4.profile)"  style="height:100px;background-color:#f3f3f3;background-image:url({{trustPhoto(photo4.photo)}})"></div>
+            </div>
+        </div>
+		
+        <div class="col col-33">
+            <div class="photo-pickable" ng-if="photo5 == null" ng-click="uploadPhoto()">
+              <div class="w-full r-3x profileP" style="height:100px;background-color:#f3f3f3;"></div>
+            </div>
+            <div class="photo-pickable" ng-if="photo5 != null">
+              <div class="w-full r-3x profileP" ng-click="showPhotoOptions(5,photo5.id,photo5.blocked,photo5.profile)"  style="height:100px;background-color:#f3f3f3;background-image:url({{trustPhoto(photo5.photo)}})"></div>
+            </div>
+        </div>
+		
+        <div class="col col-33">
+            <div class="photo-pickable" ng-if="photo6 == null" ng-click="uploadPhoto()">
+              <div class="w-full r-3x profileP" style="height:100px;background-color:#f3f3f3;"></div>
+            </div>
+            <div class="photo-pickable" ng-if="photo6 != null">
+              <div class="w-full r-3x profileP" ng-click="showPhotoOptions(6,photo6.id,photo6.blocked,photo6.profile)"  style="height:100px;background-color:#f3f3f3;background-image:url({{trustPhoto(photo6.photo)}})"></div>
+            </div>
+        </div>  		
+      </div>
+    </div>  
+    <div class="list m-n">
+      <div class="item item-divider b-none" style="background:#fff"></div>
+	 
+      <div class="item" >
+	    <span data-tid="124"></span>
+		<input style="font-size:16px;display:inline-table;border:none;background:none;float:right;text-align:right;" id="userName" value="{{name}}"/>
+      </div>
+	  
+      <div class="item" >
+	    <span data-lid="300"></span>
+		<input style="margin:0;padding:0;font-size:16px;display:inline-table;border:none;background:none;float:right;text-align:right;"  id="userAge" value="{{age}}"/>
+      </div>
+
+      <div class="item item-toggle" ng-click="updateUserGender()">
+	    <span data-tid="112"></span>
+		<label class="toggle" style="font-size:16px;top:14px;">
+			<span>{{gender}}</span>
+		</label>
+      </div>
+	  
+      <div class="item item-toggle"  ng-click="updateExtended(1)" >
+	    <span data-lid="223"></span>
+        <label class="toggle" style="font-size:16px;top:14px;" >
+			<select id="ex1"  ng-if="ex1 == null" ng-model="extended" ng-change="showSelectValue(extended,1)" >
+				<option ng-repeat="o in extended1">{{o}}</option>
+			</select>
+			<span ng-if="ex1 != null" >{{ex1}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(2)">
+	  <span data-lid="227"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex2 == null" ng-model="extended2" ng-change="showSelectValue(extended2,2)" >
+				<option ng-repeat="o in extended2 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex2 != null">{{ex2}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(3)">
+	  <span data-lid="232"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex3 == null" ng-model="extended3" ng-change="showSelectValue(extended3,3)" >
+				<option ng-repeat="o in extended3 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex3 != null"  ng-bind-html="ex3 | nl2br">{{ex3}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(4)">
+	  <span data-lid="235"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex4 == null" ng-model="extended4" ng-change="showSelectValue(extended4,4)" >
+				<option value="88 lbs (40kg)">88 lbs (40kg)</option>	
+				<option value="90 lbs (41kg)">90 lbs (41kg)</option>	
+				<option value="93 lbs (42kg)">93 lbs (42kg)</option>	
+				<option value="95 lbs (43kg)">95 lbs (43kg)</option>	
+				<option value="97 lbs (44kg)">97 lbs (44kg)</option>	
+				<option value="99 lbs (45kg)">99 lbs (45kg)</option>	
+				<option value="101 lbs (46kg)">101 lbs (46kg)</option>	
+				<option value="104 lbs (47kg)">104 lbs (47kg)</option>	
+				<option value="106 lbs (48kg)">106 lbs (48kg)</option>	
+				<option value="108 lbs (49kg)">108 lbs (49kg)</option>	
+				<option value="110 lbs (50kg)">110 lbs (50kg)</option>	
+				<option value="112 lbs (51kg)">112 lbs (51kg)</option>	
+				<option value="115 lbs (52kg)">115 lbs (52kg)</option>	
+				<option value="117 lbs (53kg)">117 lbs (53kg)</option>	
+				<option value="119 lbs (54kg)">119 lbs (54kg)</option>	
+				<option value="121 lbs (55kg)">121 lbs (55kg)</option>	
+				<option value="123 lbs (56kg)">123 lbs (56kg)</option>	
+				<option value="126 lbs (57kg)">126 lbs (57kg)</option>	
+				<option value="128 lbs (58kg)">128 lbs (58kg)</option>	
+				<option value="130 lbs (59kg)">130 lbs (59kg)</option>	
+				<option value="132 lbs (60kg)">132 lbs (60kg)</option>	
+				<option value="134 lbs (61kg)">134 lbs (61kg)</option>	
+				<option value="137 lbs (62kg)">137 lbs (62kg)</option>	
+				<option value="139 lbs (63kg)">139 lbs (63kg)</option>	
+				<option value="141 lbs (64kg)">141 lbs (64kg)</option>	
+				<option value="143 lbs (65kg)">143 lbs (65kg)</option>	
+				<option value="145 lbs (66kg)">145 lbs (66kg)</option>	
+				<option value="148 lbs (67kg)">148 lbs (67kg)</option>	
+				<option value="150 lbs (68kg)">150 lbs (68kg)</option>	
+				<option value="152 lbs (69kg)">152 lbs (69kg)</option>	
+				<option value="154 lbs (70kg)">154 lbs (70kg)</option>	
+				<option value="156 lbs (71kg)">156 lbs (71kg)</option>	
+				<option value="159 lbs (72kg)">159 lbs (72kg)</option>	
+				<option value="161 lbs (73kg)">161 lbs (73kg)</option>	
+				<option value="163 lbs (74kg)">163 lbs (74kg)</option>	
+				<option value="165 lbs (75kg)">165 lbs (75kg)</option>	
+				<option value="167 lbs (76kg)">167 lbs (76kg)</option>	
+				<option value="170 lbs (77kg)">170 lbs (77kg)</option>	
+				<option value="172 lbs (78kg)">172 lbs (78kg)</option>	
+				<option value="174 lbs (79kg)">174 lbs (79kg)</option>	
+				<option value="176 lbs (80kg)">176 lbs (80kg)</option>	
+				<option value="178 lbs (81kg)">178 lbs (81kg)</option>	
+				<option value="181 lbs (82kg)">181 lbs (82kg)</option>	
+				<option value="183 lbs (83kg)">183 lbs (83kg)</option>	
+				<option value="185 lbs (84kg)">185 lbs (84kg)</option>	
+				<option value="187 lbs (85kg)">187 lbs (85kg)</option>	
+				<option value="189 lbs (86kg)">189 lbs (86kg)</option>	
+				<option value="192 lbs (87kg)">192 lbs (87kg)</option>	
+				<option value="194 lbs (88kg)">194 lbs (88kg)</option>	
+				<option value="196 lbs (89kg)">196 lbs (89kg)</option>	
+				<option value="198 lbs (90kg)">198 lbs (90kg)</option>	
+				<option value="200 lbs (91kg)">200 lbs (91kg)</option>	
+				<option value="203 lbs (92kg)">203 lbs (92kg)</option>	
+				<option value="205 lbs (93kg)">205 lbs (93kg)</option>	
+				<option value="207 lbs (94kg)">207 lbs (94kg)</option>	
+				<option value="209 lbs (95kg)">209 lbs (95kg)</option>	
+				<option value="211 lbs (96kg)">211 lbs (96kg)</option>	
+				<option value="214 lbs (97kg)">214 lbs (97kg)</option>
+				<option value="216 lbs (98kg)">216 lbs (98kg)</option>
+				<option value="218 lbs (99kg)">218 lbs (99kg)</option>
+				<option value="220 lbs (100kg)">220 lbs (100kg)</option>
+				<option value="222 lbs (101kg)">222 lbs (101kg)</option>
+				<option value="225 lbs (102kg)">225 lbs (102kg)</option>
+				<option value="227 lbs (103kg)">227 lbs (103kg)</option>
+				<option value="229 lbs (104kg)">229 lbs (104kg)</option>
+				<option value="231 lbs (105kg)">231 lbs (105kg)</option>
+				<option value="233 lbs (106g)">233 lbs (106kg)</option>
+				<option value="236 lbs (107kg)">236 lbs (107kg)</option>
+				<option value="238 lbs (108kg)">238 lbs (108kg)</option>
+				<option value="240 lbs (109kg)">240 lbs (109kg)</option>
+				<option value="242 lbs (110kg)">242 lbs (110kg)</option>
+				<option value="244 lbs (111kg)">244 lbs (111kg)</option>
+				<option value="247 lbs (112kg)">247 lbs (112kg)</option>
+				<option value="249 lbs (113kg)">249 lbs (113kg)</option>
+				<option value="251 lbs (114kg)">251 lbs (114kg)</option>
+				<option value="253 lbs (115kg)">253 lbs (115kg)</option>
+				<option value="255 lbs (116kg)">255 lbs (116kg)</option>
+				<option value="258 lbs (117kg)">258 lbs (117kg)</option>
+				<option value="260 lbs (118kg)">260 lbs (118kg)</option>
+				<option value="262 lbs (119kg)">262 lbs (119kg)</option>
+			</select>
+			<span ng-if="ex4 != null">{{ex4}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(5)">
+	  <span data-lid="236"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex5 == null" ng-model="extended5" ng-change="showSelectValue(extended5,5)" >
+				<option ng-repeat="o in extended5 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex5 != null">{{ex5}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(6)">
+	  <span data-lid="246"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex6 == null" ng-model="extended6" ng-change="showSelectValue(extended6,6)" >
+				<option ng-repeat="o in extended6 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex6 != null">{{ex6}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(7)">
+	  <span data-lid="252"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex7 == null" ng-model="extended7" ng-change="showSelectValue(extended7,7)" >
+				<option ng-repeat="o in extended7 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex7 != null">{{ex7}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(8)">
+	  <span data-lid="258"></span>
+	  
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex8 == null" ng-model="extended8" ng-change="showSelectValue(extended8,8)" >
+				<option ng-repeat="o in extended8 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex8 != null">{{ex8}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(9)">
+	  <span data-lid="262"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex9 == null" ng-model="extended9" ng-change="showSelectValue(extended9,9)" >
+				<option ng-repeat="o in extended9 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex9 != null">{{ex9}}</span>
+        </label>
+      </div>
+	  
+      <div class="item item-toggle" ng-click="updateExtended(10)">
+	  <span data-lid="263"></span>
+        <label class="toggle" style="font-size:16px;top:14px;">
+			<select  ng-if="ex10 == null" ng-model="extended10" ng-change="showSelectValue(extended10,10)" >
+				<option ng-repeat="o in extended10 track by $index">{{o}}</option>
+			</select>
+			<span ng-if="ex10 != null">{{ex10}}</span>
+        </label>
+      </div>
+
+    </div>	
+	
+    <div class="list m-n">
+      <div class="item item-divider b-none"></div>
+      <div class="item item-divider b-none" data-tid="100"></div>
+      <div class="item">
+        <textarea id="userBio" style="width:100%;font-size:16px;">{{bio}}</textarea>
+      </div>
+    </div>
+
+ <div class="item item-divider b-none" style="background:#fff"></div>
+  </ion-content>
+</ion-modal-view>

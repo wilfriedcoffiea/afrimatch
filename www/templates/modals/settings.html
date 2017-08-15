@@ -1,0 +1,167 @@
+<ion-modal-view class="animated" >
+  <ion-header-bar>
+    <h1 class="title mi-pollita">{{alang[40].text}}</h1>
+    <button class="button button-clear mi-pollita" style="font-size:14px" ng-click="closeSettingsModal()">{{alang[83].text}}</button>
+  </ion-header-bar>
+  
+  <ion-content>
+    <div class="list m-n">
+      <div class="item item-divider b-none"></div>
+      <div class="item item-divider b-none text-u-c">{{alang[84].text}}</div>
+      
+      <div class="item" horizontal layout center>
+        <div class="row no-padder">
+          <div class="col-40">
+            {{alang[85].text}}
+          </div>
+          <div class="col-60 text-right">
+            <input style="border:none;float:right;" value="" google-autocomplete-suggestion location="data.location" on-selection="onAddressSelection(location)" ng-model="data.location" />
+          </div>
+        </div>
+        <span class="item-note m-l">
+          <i class="icon ion-chevron-right"></i>
+        </span>
+      </div>
+
+      <div class="item b-t">
+        {{alang[86].text}}
+        <span class="item-note">
+		  <div ng-if="distance < 30">{{alang[87].text}}</div>
+		  <div ng-if="distance < 550 && distance > 500 ">{{alang[88].text}}</div>		  
+		  <div ng-if="distance > 30 && distance < 500 || distance > 550 && distance < 1000">{{distance}} km</div>		  
+		  <div ng-if="distance == 1000">{{alang[89].text}}</div>
+        </span>
+		
+        <div class="range range-positive" ng-init="distance = 520">
+          <input type="range" name="distance" min="0" max="1000" value="distance" ng-model="distance" 
+             ng-model-options="{ updateOn: 'change' }"
+             ng-change="updateDistance(distance)" class="w-full">
+        </div>
+      </div>
+
+      <div class="item" ng-click="updateGender()" horizontal layout center>
+        <div class="row no-padder">
+          <div class="col-40">
+            {{alang[90].text}}
+          </div>
+          <div class="col-60 text-right">
+             {{gender}}
+            <div class="text-xs text-muted"></div>
+          </div>
+        </div>
+        <span class="item-note m-l">
+          <i class="icon ion-chevron-right"></i>
+        </span>
+      </div>
+      <div class="item b-t">
+       {{alang[91].text}}
+        <span class="item-note">
+          18-{{age}}
+        </span>
+        <div class="range range-positive">
+          <input type="range" name="volume" min="18" max="80" ng-model="age" ng-init="age = 30"
+			 ng-model-options="{ updateOn: 'change' }"
+             ng-change="updateAge(age)" class="w-full">
+        </div>
+      </div>
+      <div class="item item-toggle">
+        {{alang[92].text}}
+        <label class="toggle toggle-assertive">
+		  <input type="checkbox" ng-click="updateOnline()">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="list m-n">
+      <div class="item item-divider b-none"></div>
+      <div class="item item-divider b-none text-u-c">{{alang[93].text}}</div>
+      <div class="item item-toggle">
+        {{alang[94].text}}
+        <label class="toggle toggle-assertive">
+          <input type="checkbox" ng-checked="matches" ng-model="matches"  ng-click="updateNotification('match_m',matches)">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+      <div class="item item-toggle">
+        {{alang[95].text}}
+        <label class="toggle toggle-assertive">
+          <input type="checkbox" ng-checked="likes" ng-model="likes"  ng-click="updateNotification('fan',likes)">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+      <div class="item item-toggle">
+        {{alang[96].text}}
+        <label class="toggle toggle-assertive">
+          <input type="checkbox" ng-checked="messages" ng-model="messages"  ng-click="updateNotification('message',messages)">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+      <div class="item item-toggle">
+        {{alang[9].text}}
+        <label class="toggle toggle-assertive">
+          <input type="checkbox" ng-checked="superlike" ng-model="superlike"  ng-click="updateNotification('superlike',superlike)">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+      <!--
+      <div class="item item-toggle">
+        {{alang[97].text}}
+        <label class="toggle toggle-assertive">
+          <input type="checkbox" ng-checked="visits" ng-model="visits"  ng-click="updateNotification('visit',visits)">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+      -->
+    </div>
+
+    <div class="list m-n " ng-click="openPremiumModal()">
+      <div class="item item-divider b-none"></div>
+      <div class="item text-center assertive font-bold text-u-c mi-violetita">{{alang[41].text}}</div>
+    </div>	
+	
+
+
+    <div class="list m-n">
+      <div class="item item-divider b-none"></div>
+      <div class="item item-divider b-none text-u-c">{{alang[98].text}}</div>  
+      <div class="item" ng-click="openPrivacy()">
+        {{alang[100].text}}
+        <span class="item-note">
+          <i class="icon ion-chevron-right"></i>
+        </span>
+      </div>
+
+      <div class="item"  ng-click="openTerms()">
+        {{alang[101].text}}
+        <span class="item-note">
+          <i class="icon ion-chevron-right"></i>
+        </span>
+      </div>
+
+    </div>
+	
+	<!--
+    <div class="list m-n">
+      <div class="item item-divider b-none"></div>
+      <div class="item" ng-click="deleteProfile()" style="text-align:center;color:#ff4f38">
+        {{lang[150].text}}
+      </div>	  
+
+    </div>
+  -->
+    </div>
+  </ion-content>
+</ion-modal-view>

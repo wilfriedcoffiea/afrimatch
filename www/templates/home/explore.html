@@ -1,0 +1,112 @@
+<ion-view title="Lindoo">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" nav-direction="back"  ui-sref="home.settings">
+      <img src="img/profile.jpg" width="34px" />
+	 <!--<span class="dot-notification" style="margin-left:25px"></span>-->
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" nav-direction="forward" ui-sref="home.matches">
+      <span class="dot-notification" ng-if="newChat" style="width:12px;height:12px;"></span>
+      <img src="img/chat-icon.png" width="34px" />
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>
+    <img src="{{logo}}" height="34px" style="margin-top:5px" alt="">
+  </ion-nav-title>
+
+  <ion-content on-swipe-left="goToChat()" on-swipe-right="goToSettings()" vertical layout scroll="false"  style="background:#F6F7FC">
+    <div class="card-container text-center" flex relative vertical layout>
+	  <div ng-show="noSlike" >
+			<div class="credits-section text-center animated fadeInUp" >
+				<h5 class="mi-pollita" style="color:#BFC5D5"></h5>					
+				<div class="wrapper text-center">
+				  <div class="pos-rlt">
+					<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{slikephoto}});height:{{w}}px;width:{{w}}px;" ></div>
+					<i class="icon ion-arrow-up-c button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#275BDF"></i>							
+				  </div>
+				</div>						
+				<h1>Uhm...</h1>
+				<h4>You dont have enough Super likes</h4>
+				<center><span class="spotlight-me" ng-click="buySlike()" style="background:#275BDF;border:#025BDF">Buy 10 Super Likes</span>
+				<span class="spotlight-me" ng-click="noBtnSlike()" style="background:#dedede;border:#d0d0d0">No thanks</span></center>
+				<br><h4>Cost <b>400</b> Credits</h4>                    
+			</div>
+	  </div>	
+      <div  ng-show="cards.length == 0 && !noSlike" vertical layout center flex style="z-index:99" ng-click="openSettingsModal()" >
+        <div flex horizontal layout center >
+          <div class="load" >
+			<img class="thumb-lg rounded b b-5x b-light box-shadow profilePhoto" style="background-image:url('{{trustSrc(uphoto)}}');width:96px;height:96px;"/>		  
+          </div>
+        </div>
+        <div class="text-muted text-center l-h">
+          {{loading}}
+        </div>
+      </div>
+
+      <td-cards fit ng-show="!noSlike">
+        <td-card ng-repeat="card in cards" 
+          on-destroy="cardDestroyed($index)" 
+          on-swipe-left="cardSwipedLeft($event, $index)" 
+          on-swipe-right="cardSwipedRight($event, $index)" 
+          on-partial-swipe="cardPartialSwipe(amt)" 
+          on-transition-left="transitionLeft(card)"
+          on-transition-right="transitionRight(card)"
+          on-transition-out="transitionOut(card)"
+          class="card-1"
+          ng-style="{'z-index': cards.length - $index + 1}"><!-- Work around for The z-index missing issue-->
+          <div class="card-tinder bg-white" vertical layout ng-click="openProfileModal({{card.id}},'{{card.name}}','{{card.photo}}',{{card.age}},'{{card.city}}')">
+            <div flex class="div-img" ng-style="{'background-image': 'url(\'' + trustSrc(card.photo) + '\')'}"></div>  
+            <div class="row caption text-lg l-h">
+              <div class="col-80 text-left">
+                <div class="text mi-pollita padding-top" >{{card.name}}, {{card.age}} <span class="chat-status" ng-if="card.status == 1" style="background:#51B80E" ></span></div>
+                <div class="text-muted mi-pollita" style="font-size:14px;">{{card.city}}</div>
+              </div>
+              <div class="col-20 text-muted text-xl text-right">
+		
+			  </div>
+            </div>
+            <div class="no-text">
+              <span class="wrapper-xs b b-danger b-5x r-3x assertive font-bold text-3x mi-pollita">{{alang[34].text}}</span>
+            </div>
+            <div class="yes-text">
+              <span class="wrapper-xs b b-success b-5x r-3x balanced font-bold text-3x mi-pollita">{{alang[35].text}}</span>
+            </div>
+          </div>
+        </td-card>
+      </td-cards>
+    </div>
+	
+    <div class="card-actions padder-copatene" ng-show="!noSlike" horizontal layout around-justified center>
+
+      <div class="card-action" ng-if="discoverChat">
+        <button class="button button-light rounded" ng-click="chatUser('home.messaging','right',cu2)">
+          <img src="img/gchat.png" width="32px" ng-class="cards.length == 0 ? 'grayScale' : 'balanced'"   />
+        </button>
+      </div>
+
+      <div class="card-action bigger-button">
+        <button class="button button-large button-light rounded s" ng-class="{zoom: isMoveLeft}" ng-click="nolike();cardDestroyed(0,0);">
+          <img src="img/gno.jpg" ng-class="cards.length == 0 ? 'grayScale' : 'balanced'"  />
+        </button>
+      </div>
+
+      <div class="card-action bigger-button">
+        <button class="button button-large button-light rounded cardlike" ng-class="{zoom: isMoveRight}" ng-click="like();cardDestroyed(0,1);">
+          <img src="img/gyes.jpg" ng-class="cards.length == 0 ? 'grayScale' : 'balanced'"  />
+        </button>
+      </div>
+
+      <div class="card-action" ng-if="discoverSlike">
+    		<div class="slike" ng-if="superLike > 0 && superLike < 10"><span style="font-size:14px;margin-left:6px">{{superLike}}</span></div>
+    		<div class="slike" ng-if="superLike >= 10"><span style="font-size:12px;">{{superLike}}</span></div>		
+            <button class="button button-light rounded" ng-click="slike();">
+    		      <img src="img/slike.jpg" width="32px" ng-class="cards.length == 0 ? 'grayScale' : 'balanced'"   />
+            </button>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,161 @@
+<ion-view title="Tinder">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" nav-direction="back"  ui-sref="home.settings">
+		<i class="icon ion-arrow-left-c"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>
+    <button class="button button-clear m-t-xs">
+	  <div class="text-center mi-pollita" >
+		{{title}}
+	  </div>
+    </button>
+  </ion-nav-title>
+  
+  <ion-content style="margin-bottom:50px;" delegate-handle="userMessageScroll">
+		<!--MY MATCHES -->
+		<ion-list ng-if="show == 1" >	
+			  <div ng-show="noMatches" >
+					<div class="credits-section text-center">
+						<h5 class="mi-pollita" style="color:#BFC5D5">{{alang[70].text}}</h5>					
+						<div class="wrapper text-center">
+						  <div class="pos-rlt">
+							<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+							<i class="icon ion-ios-heart button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#F02139"></i>							
+						  </div>
+						</div>						
+						<h1>{{tlang[75].text}}</h1>
+						<h4>{{tlang[76].text}}</h4>
+						<center><span class="first-me" ng-click="openCreditsModal()" style="background:#F02139;border:#A02139">{{tlang[77].text}}</span></center>
+						<br><h4>{{tlang[13].text}} <b>{{firstmeprice}}</b> {{tlang[17].text}}</h4>                   
+					</div>
+			  </div>		
+			<ion-item class="" style="border:none" ng-repeat="p in matches track by $index" ng-click="changePage('home.messaging','right',p)">
+			  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+			  <div class="text-lg b-b b-light clear padder-v">
+
+				<div class="text-c chat-name" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+				<div class="text-xs text-muted text-right " style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<div style="position:relative;width:100%;">
+					<p class="text-muted chat-last-m paQueRespete">{{p.last_m}}</p>
+				</div>
+			  </div>						  
+			</ion-item>
+		</ion-list>
+		
+		<!-- MY FANS -->
+		<ion-list ng-if="show == 2" >	
+			  <div ng-show="noFans" >
+					<div class="credits-section text-center">
+						<h5 class="mi-pollita" style="color:#BFC5D5">{{alang[71].text}}</h5>					
+						<div class="wrapper text-center">
+						  <div class="pos-rlt">
+							<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+							<i class="icon ion-ios-star button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#FF8200"></i>							
+						  </div>
+						</div>						
+						<h1>{{tlang[78].text}}</h1>
+						<h4>{{tlang[79].text}}</h4>
+						<center><span class="cien-me" ng-click="openCreditsModal()" style="background:#FF8200;border:#FF2600">{{tlang[80].text}}r</span></center>
+						<br><h4>{{tlang[13].text}} <b>{{cienmeprice}}</b> {{tlang[17].text}}</h4>                      
+					</div>
+			  </div>	
+			<div ng-class="!canSeeFans ? 'sblur' : ''">			  
+				<ion-item class="" style="border:none" ng-repeat="p in myfans track by $index" ng-click="changePage('home.messaging','right',p)">
+				  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+				  <div class="text-lg b-b b-light clear padder-v">
+
+					<div class="text-c chat-name" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+					<div class="text-xs text-muted text-right " style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+					<div style="position:relative;width:100%;">
+						<p class="text-muted chat-last-m paQueRespete">{{p.last_m}}</p>
+					</div>
+				  </div>
+			  </div>
+			</ion-item>
+		</ion-list>
+
+		<!-- SUPER LIKE -->
+		<ion-list ng-if="show == 4" >	
+			  <div ng-show="noSuperLike" >
+					<div class="credits-section text-center">
+						<h5 class="mi-pollita" style="color:#BFC5D5">{{alang[71].text}}</h5>					
+						<div class="wrapper text-center">
+						  <div class="pos-rlt">
+							<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+							<i class="icon ion-ios-star button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#FF8200"></i>							
+						  </div>
+						</div>						
+						<h1>{{tlang[78].text}}</h1>
+						<h4>{{tlang[79].text}}</h4>
+						<center><span class="cien-me" ng-click="openCreditsModal()" style="background:#FF8200;border:#FF2600">{{tlang[80].text}}r</span></center>
+						<br><h4>{{tlang[13].text}} <b>{{cienmeprice}}</b> {{tlang[17].text}}</h4>                      
+					</div>
+			  </div>	
+			<div>			  
+				<ion-item class="" style="border:none" ng-repeat="p in superlikes track by $index" ng-click="changePage('home.messaging','right',p)">
+				  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+				  <div class="text-lg b-b b-light clear padder-v">
+
+					<div class="text-c chat-name" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+					<div class="text-xs text-muted text-right " style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+					<div style="position:relative;width:100%;">
+						<p class="text-muted chat-last-m paQueRespete">{{p.last_m}}</p>
+					</div>
+				  </div>
+			  </div>
+			</ion-item>
+		</ion-list>		
+
+		<!--MY LIKES -->
+		<ion-list  ng-if="show == 3" >	 
+			  <div ng-show="noLikes" >
+					<div class="credits-section text-center" style="margin-top:100px">
+						<h5 class="mi-pollita" style="color:#BFC5D5">{{alang[72].text}}</h5>
+						<a ui-sref="home.explore">{{alang[73].text}}</a>
+					</div>
+			  </div>		
+			<ion-item class="" style="border:none" ng-repeat="p in mylikes track by $index"  ng-click="changePage('home.messaging','right',p)">
+			  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+			  <div class="text-lg b-b b-light clear padder-v">
+
+				<div class="text-c chat-name" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+				<div class="text-xs text-muted text-right " style="display:inline-table;float:right;padding-right:10px">{{p.last_m_time}}</div>				
+				<div style="position:relative;width:100%;">
+					<p class="text-muted chat-last-m paQueRespete">{{p.last_m}}</p>
+				</div>
+			  </div>						  
+			</ion-item>
+		</ion-list>
+		
+  </ion-content>
+	<div class="only-premium" ng-show="!canSeeFans && !noFans" >			
+		<div class="credits-section text-center">					
+			<div class="wrapper text-center">
+			  <div class="pos-rlt">
+				<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+				<i class="icon ion-flash button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#8A21EF"></i>							
+			  </div>
+			</div>						
+			<h1>{{myfans.length}} {{alang[74].text}}</h1>
+			<h4>{{alang[75].text}}</h4>
+			<center><span class="spotlight-me" ng-click="openPremiumModal()" style="background:#8A21EF;border:#2821EF">{{alang[76].text}}</span></center>
+			<br>                   
+		</div>
+	</div> 	
+	<ion-tabs class="tabs-stable mi-pollita tabs-icon-top animated fadeIn upp">
+	  <ion-tab title="{{alang[77].text}}" badge="" badge-style="opacity-badge" class="mi-pollita" icon-on="ion-ios-star" icon-off="ion-ios-star-outline" on-select="onTabShow(2,'{{alang[77].text}}')">
+	  </ion-tab>
+
+	  <ion-tab title="{{alang[78].text}}" class="animated fadeIn mi-pollita" icon-on="ion-ios-heart" icon-off="ion-ios-heart-outline" on-select="onTabShow(1,'{{alang[78].text}}')">
+	  </ion-tab>
+
+	  <ion-tab title="Super Likes" class="animated fadeIn mi-pollita" icon-on="ion-ios-bolt" icon-off="ion-ios-bolt-outline" on-select="onTabShow(4,'Super likes')">
+	  </ion-tab>	  
+
+	  <ion-tab title="{{alang[79].text}}" badge="" class="mi-pollita" icon-on="ion-ios-checkmark" icon-off="ion-ios-checkmark-outline"  on-select="onTabShow(3,'{{alang[79].text}}')">
+	  </ion-tab>
+
+	</ion-tabs> 	
+</ion-view>

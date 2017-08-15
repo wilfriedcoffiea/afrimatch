@@ -1,0 +1,63 @@
+<ion-view title="Tinder">
+  <ion-nav-buttons side="left">
+    <button class="button button-clear" nav-direction="back"  ui-sref="home.settings">
+		<i class="icon ion-arrow-left-c"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-title>
+    <button class="button button-clear m-t-xs">
+	  <div class="text-center mi-pollita" >
+		{{title}}
+	  </div>
+    </button>
+  </ion-nav-title>
+  
+  <ion-content delegate-handle="userMessageScroll">
+		<!--MY VISITORS -->
+		<ion-list ng-if="show == 1" >	
+			  <div ng-show="noVisitors && !canSeeVisitors" >
+					<div class="credits-section text-center">
+						<h5 class="mi-pollita" style="color:#BFC5D5">{{alang[80].text}}</h5>					
+						<div class="wrapper text-center">
+						  <div class="pos-rlt">
+							<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+							<i class="icon ion-arrow-up-c button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#275BDF"></i>							
+						  </div>
+						</div>						
+						<h1>{{tlang[72].text}}</h1>
+						<h4>{{tlang[73].text}}</h4>
+						<center><span class="spotlight-me" ng-click="openCreditsModal()" style="background:#275BDF;border:#025BDF">{{tlang[74].text}}</span></center>
+						<br><h4>{{tlang[13].text}} <b>{{spotlightprice}}</b> {{tlang[17].text}}</h4>                    
+					</div>
+			  </div>
+			<div ng-class="!canSeeVisitors ? 'sblur' : ''">
+			<ion-item class="" style="border:none" ng-repeat="p in visitors track by $index" ng-click="changePage('home.messaging','right',p)">
+			  <div class="thumb-md rounded pull-left m-l m-r-md profileP" style="margin-top:10px;background-image:url('{{p.photo}}');width:60px;height:60px;"></div>
+			  <div class="text-lg b-b b-light clear padder-v">
+
+				<div class="text-c chat-name" style="display:inline-table">{{p.name}} <span class="chat-status" ng-if="p.status == 1" style="background:#51B80E" ></span></div>
+							
+				<div style="position:relative;width:100%;">
+					<p class="text-muted chat-last-m paQueRespete">{{p.last_m}}</p>
+				</div>
+			  </div>						  
+			</ion-item>	
+			</div>
+		</ion-list>		
+  </ion-content> 
+	<div class="only-premium" ng-show="!canSeeVisitors && !noVisitors" >			
+		<div class="credits-section text-center">					
+			<div class="wrapper text-center">
+			  <div class="pos-rlt">
+				<div class="thumb-xxl rounded profileP border-profile" style="background-image:url({{photo}});height:{{w}}px;width:{{w}}px;" ></div>
+				<i class="icon ion-flash button-edit light text-lg b b-3x b-light b-2x rounded" style="background:#8A21EF"></i>							
+			  </div>
+			</div>						
+			<h1>{{visitors.length}} {{alang[81].text}}</h1>
+			<h4>{{alang[82].text}}</h4>
+			<center><span class="spotlight-me" ng-click="openPremiumModal()" style="background:#8A21EF;border:#2821EF">{{alang[76].text}}</span></center>
+			<br>                    
+		</div>
+	</div>  
+</ion-view>
