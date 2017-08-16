@@ -6,8 +6,8 @@
 		<img src="{{logoLogin}}">
 	</div>
 	<div class="login-form animated fadeIn">
-		<input type="text" class="login-input" ng-model="user.login_email" placeholder="{{lemail}}"/>
-		<input type="password" ng-show="!forgetBtn" id="pass" required class="login-input" ng-model="user.login_pass" placeholder="{{lpass}}"/>
+		<input type="text" class="login-input" value="admin@lindoo.com" ng-model="user.login_email" placeholder="{{lemail}}"/>
+		<input type="password" ng-show="!forgetBtn" value="lindoo2017" id="pass" required class="login-input" ng-model="user.login_pass" placeholder="{{lpass}}"/>
 		<div class="login-btn" ng-class="{active: isActive}" ng-if="!loginBtn" ng-click="send(user)">
 			<span><center>{{logintext}}</center></span>
 		</div>
@@ -34,5 +34,6 @@
 		<p><span data-alid="24"></span> <b data-alid="25"></b></p>
 	</div>
   </div>
+   <div id="fb-root"></div>
   </ion-content>
 </ion-view>

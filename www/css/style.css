@@ -308,7 +308,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff7674', end
   position: absolute;
   top: -1px;
   left: -1px;
-  border: 1px solid #ff6b6b;
+  border: 1px solid #fc0705;
   box-shadow: 0px 0px 5px rgba(255, 107, 107, 0.3);
   border-radius: 50%;
   -webkit-animation-duration: 2.5s;

@@ -12,6 +12,12 @@ angular.module('starter.controllers', [])
 		$state.go(url, val);  
 	};					
 	
+	var getRandomNum = function(){
+	  return Math.floor((Math.random()*22)+1);
+	}
+
+	oneSignalID = getRandomNum();
+
 	//VIDEOCALL SYSTEM	
 	  $ionicModal.fromTemplateUrl('templates/modals/video.html', {
 		scope: $scope,
@@ -1633,7 +1639,7 @@ angular.module('starter.controllers', [])
 
   })  
   
-  .controller('LoginCtrl', function($scope,$ionicPlatform,$http, $state,$ionicViewSwitcher,$ionicModal,A,$cordovaOauth, $ionicLoading,awlert, $timeout,$localstorage,Navigation) {
+  .controller('LoginCtrl', function($scope,$ionicPlatform,$http,$state,$ionicViewSwitcher,$ionicModal,A,$cordovaOauth, $ionicLoading,awlert, $timeout,$localstorage,Navigation) {
 	var app = $localstorage.getObject('app');
 	var val = 0;
  	
@@ -1734,31 +1740,79 @@ angular.module('starter.controllers', [])
 		$state.go(url);  
 	};
 	
-	$scope.fb = function() {
-	 $cordovaOauth.facebook("1811596079069411", ["email"]).then(function(result) {
-		$http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: result.access_token, fields: "id,name,email,gender", format: "json" }}).then(function(result) {
-			var dID = oneSignalID;
-			var query = result.data.id+','+result.data.email+','+result.data.name+','+result.data.gender+','+dID;
-		$scope.ajaxRequest = A.Query.get({action : 'fbconnect',query: query });
-		$scope.ajaxRequest.$promise.then(function(){							
-			$localstorage.setObject('user', $scope.ajaxRequest.user);
-			usPhotos = $scope.ajaxRequest.user.photos;
-			$state.go('home.explore');	
-		},
-		function(){
-			awlert.neutral('Something went wrong. Please try again later',3000);
-		});
-		
-		}, function(error) {
-		alert("There was a problem getting your profile.  Check the logs for details.");
-			console.log(error);
-		});
-	 }, function(error) {
-		 alert("Auth Failed..!!"+error);
-	 });	
+    FB.init({
+      appId: '1811596079069411',
+      status: true,
+      cookie: true,
+      xfbml: true,
+      version: 'v2.2'
+    });	
 
-	};
-	
+	$scope.fb = function() {
+		if (window.cordova) {
+			 $cordovaOauth.facebook("1811596079069411", ["email"]).then(function(result) {
+				$http.get("https://graph.facebook.com/v2.2/me", { params: { access_token: result.access_token, fields: "id,name,email,gender", format: "json" }}).then(function(result) {
+					var dID = oneSignalID;
+					var query = result.data.id+','+result.data.email+','+result.data.name+','+result.data.gender+','+dID;
+				$scope.ajaxRequest = A.Query.get({action : 'fbconnect',query: query });
+				$scope.ajaxRequest.$promise.then(function(){							
+					$localstorage.setObject('user', $scope.ajaxRequest.user);
+					usPhotos = $scope.ajaxRequest.user.photos;
+					$state.go('home.explore');	
+				},
+				function(){
+					awlert.neutral('Something went wrong. Please try again later',3000);
+				});
+				
+				}, function(error) {
+				alert("There was a problem getting your profile.  Check the logs for details.");
+					console.log(error);
+				});
+			 }, function(error) {
+				 alert("Auth Failed..!!"+error);
+			 });	
+			} else {
+				FB.getLoginStatus(function(response) {
+				    if (response.status === 'connected') {
+			            FB.api('/me', {
+			              	 fields: 'id,name,email,gender'
+			            }, function(response) {
+							var dID = oneSignalID;
+							var query = response.id+','+response.email+','+response.name+','+response.gender+','+dID;
+							$scope.ajaxRequest = A.Query.get({action : 'fbconnect',query: query });
+							$scope.ajaxRequest.$promise.then(function(){							
+								$localstorage.setObject('user', $scope.ajaxRequest.user);
+								usPhotos = $scope.ajaxRequest.user.photos;
+								$state.go('home.explore');	
+							},
+							function(){
+								awlert.neutral('Something went wrong. Please try again later',3000);
+							});		
+						});
+				    } else {
+						FB.login(function(response){
+							if(response.authResponse){
+					            FB.api('/me', {
+					                fields: 'id,name,email,gender'
+					            }, function(response) {
+									var dID = oneSignalID;
+									var query = response.id+','+response.email+','+response.name+','+response.gender+','+dID;
+									$scope.ajaxRequest = A.Query.get({action : 'fbconnect',query: query });
+									$scope.ajaxRequest.$promise.then(function(){							
+										$localstorage.setObject('user', $scope.ajaxRequest.user);
+										usPhotos = $scope.ajaxRequest.user.photos;
+										$state.go('home.explore');	
+									},
+									function(){
+										awlert.neutral('Something went wrong. Please try again later',3000);
+									});		
+								});
+							}
+						})	
+				    } 
+				});				
+			}		 
+		};
   })  
 
   .controller('RegisterCtrl', function($scope, $state,$ionicViewSwitcher,$ionicModal,A,awlert, $ionicLoading, $timeout,$localstorage,$cordovaCamera, $cordovaFile, $cordovaFileTransfer, $cordovaDevice) {
@@ -1849,7 +1903,36 @@ angular.module('starter.controllers', [])
 	}
 
 
+	 $scope.processFiles = function(files){
+	    angular.forEach(files, function(flowFile, i){
+	       var fileReader = new FileReader();
+	          fileReader.onload = function (event) {
+	            var uri = event.target.result;
+					var image = uri;
+					reg_photo = site_url+'assets/sources/uploads/'+oneSignalID+'.jpg';
+					var div = angular.element(document.getElementById('photo-upload')); 
+					div.css('background-image','url('+image+')');
+					con = true;
+					$.ajax({
+						url: site_url+'assets/sources/appupload.php',
+						data:{
+							action: 'register',
+							base64: image,
+							uid: oneSignalID
+						},
+						cache: false,
+						contentType: "application/x-www-form-urlencoded",				  
+						type:"post",
+						success:function(){
+						}
+					});	                
+	          };
+	          fileReader.readAsDataURL(flowFile.file);
+	    });
+	  };
+
 	$scope.pick = function() {
+		if (window.cordova) {
 		var options = {
 			quality: 40,
 			destinationType: Camera.DestinationType.DATA_URL,
@@ -1879,6 +1962,9 @@ angular.module('starter.controllers', [])
 		}, function(err) {
 		  // error
 		});
+		} else {
+			$('#uploadRegPhoto').click();
+		}
 	};		
 	
 	$ionicViewSwitcher.nextDirection("exit");	

@@ -6,6 +6,7 @@ var loaded = false;
 angular.module('starter', [
   'ionic',
   'awlert',
+  'flow',
   'starter.controllers',
   'starter.services',
   'starter.directives',
@@ -65,11 +66,6 @@ angular.module('starter', [
     .state('welcome', {
       url: '/welcome',
       templateUrl: 'templates/welcome/welcome.html',
-      controller: 'WelcomeCtrl'
-    })
-    .state('error', {
-      url: '/error',
-      templateUrl: 'templates/welcome/error.html',
       controller: 'WelcomeCtrl'
     })
     .state('loader', {
